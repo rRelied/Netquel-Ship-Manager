@@ -1,6 +1,6 @@
 # 🚀 Netquel Ship Manager
 
-**Version 2.1 · Made by Relied**  
+**Version 2.1**  
 *Save, organize, and instantly load your custom ships on [Netquel.com](https://netquel.com)*
 
 ---
