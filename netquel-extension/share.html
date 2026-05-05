@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Netquel Ship — Shared Link</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap');
+    * { margin:0; padding:0; box-sizing:border-box; }
+    :root { --bg:#080d14; --surface:#0d1520; --border:#1a2d45;
+      --accent:#00e5a0; --accent2:#0af; --text:#c8dff0; --muted:#4a6a85; }
+    body { background:var(--bg); color:var(--text); font-family:'Share Tech Mono',monospace;
+      min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; }
+    .card { background:var(--surface); border:1px solid var(--border); border-radius:12px;
+      padding:32px; max-width:480px; width:100%; display:flex; flex-direction:column; gap:20px; text-align:center; }
+    .logo { font-size:36px; }
+    h1 { font-family:'Orbitron',sans-serif; font-size:14px; color:var(--accent); letter-spacing:.1em; }
+    .ship-name { font-family:'Orbitron',sans-serif; font-size:20px; color:var(--text);
+      letter-spacing:.06em; padding:12px 0; }
+    .ship-code { font-size:10px; color:var(--muted); background:var(--bg);
+      border:1px solid var(--border); border-radius:6px; padding:10px 14px;
+      word-break:break-all; text-align:left; line-height:1.6; }
+    .btn { padding:12px 20px; border:none; border-radius:6px; font-family:'Share Tech Mono',monospace;
+      font-size:13px; font-weight:700; cursor:pointer; transition:all .15s; width:100%; }
+    .btn-primary { background:var(--accent); color:#000; }
+    .btn-primary:hover { background:#00ffb3; }
+    .btn-secondary { background:transparent; border:1px solid var(--border); color:var(--muted); }
+    .btn-secondary:hover { border-color:var(--accent2); color:var(--accent2); }
+    .note { font-size:10px; color:var(--muted); line-height:1.6; }
+    .copied { color:var(--accent); font-size:11px; min-height:16px; }
+    body::after { content:''; position:fixed; inset:0;
+      background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.025) 2px,rgba(0,0,0,.025) 4px);
+      pointer-events:none; }
+  </style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">🚀</div>
+  <h1>NETQUEL SHIP MANAGER</h1>
+  <div class="ship-name" id="ship-name">Loading...</div>
+  <div class="ship-code" id="ship-code">—</div>
+  <div class="copied" id="copied-msg"></div>
+  <button class="btn btn-primary" id="copy-btn">📋 Copy Code to Clipboard</button>
+  <button class="btn btn-secondary" id="goto-btn">🚀 Open Netquel.com</button>
+  <div class="note">
+    Shared via <strong style="color:var(--accent)">Netquel Ship Manager</strong> by Relied.<br>
+    Copy the code above, then use <code>/load [code]</code> in Netquel chat.
+  </div>
+</div>
+<script>
+  const params   = new URLSearchParams(location.search);
+  const name     = params.get('name') || 'Unknown Ship';
+  const codeB64  = params.get('code') || '';
+  let   code     = '';
+  try { code = atob(codeB64); } catch { code = codeB64; }
+
+  document.getElementById('ship-name').textContent = name;
+  document.getElementById('ship-code').textContent = code || '(no code)';
+
+  document.getElementById('copy-btn').addEventListener('click', async () => {
+    if (!code) return;
+    await navigator.clipboard.writeText(code);
+    const msg = document.getElementById('copied-msg');
+    msg.textContent = '✓ Copied to clipboard!';
+    setTimeout(() => msg.textContent = '', 2000);
+  });
+
+  document.getElementById('goto-btn').addEventListener('click', () => {
+    window.open('https://netquel.com', '_blank');
+  });
+</script>
+</body>
+</html>

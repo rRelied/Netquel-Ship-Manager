@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "Netquel Ship Manager",
+  "version": "2.1.0",
+  "description": "Save and load custom ships on Netquel.com. Made by Relied.",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "tabs"
+  ],
+  "host_permissions": [
+    "*://*.netquel.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://*.netquel.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["popup.html", "tos.html", "privacy.html", "share.html"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

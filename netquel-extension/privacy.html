@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Privacy Policy — Netquel Ship Manager</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap');
+    * { margin:0; padding:0; box-sizing:border-box; }
+    :root { --bg:#080d14; --surface:#0d1520; --border:#1a2d45;
+      --accent:#00e5a0; --accent2:#0af; --text:#c8dff0; --muted:#4a6a85; }
+    body { background:var(--bg); color:var(--text); font-family:'Share Tech Mono',monospace;
+      font-size:13px; line-height:1.8; min-height:100vh; }
+    .page { max-width:720px; margin:0 auto; padding:48px 24px; }
+    .logo { font-size:28px; margin-bottom:8px; }
+    h1 { font-family:'Orbitron',sans-serif; font-size:20px; color:var(--accent);
+      letter-spacing:.1em; margin-bottom:4px; }
+    .subtitle { color:var(--muted); font-size:11px; margin-bottom:36px; }
+    h2 { font-family:'Orbitron',sans-serif; font-size:13px; color:var(--accent2);
+      letter-spacing:.08em; margin:28px 0 10px; border-bottom:1px solid var(--border); padding-bottom:6px; }
+    p { color:var(--text); margin-bottom:10px; }
+    .highlight { color:var(--accent); font-weight:700; }
+    .card { background:var(--surface); border:1px solid var(--border); border-radius:8px;
+      padding:16px 20px; margin:16px 0; }
+    .big-statement { font-family:'Orbitron',sans-serif; font-size:15px; color:var(--accent);
+      text-align:center; padding:20px; border:1px solid rgba(0,229,160,.3);
+      border-radius:8px; background:rgba(0,229,160,.05); margin:20px 0; letter-spacing:.05em; }
+    footer { margin-top:48px; padding-top:16px; border-top:1px solid var(--border);
+      font-size:10px; color:var(--muted); text-align:center; }
+    body::after { content:''; position:fixed; inset:0;
+      background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.02) 2px,rgba(0,0,0,.02) 4px);
+      pointer-events:none; z-index:9999; }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="logo">🚀</div>
+  <h1>PRIVACY POLICY</h1>
+  <div class="subtitle">Netquel Ship Manager · Last updated: 2025 · Made by Relied</div>
+
+  <div class="big-statement">We do not collect your data. Period.</div>
+
+  <h2>1. Data We Collect</h2>
+  <div class="card">
+    <p>The short answer: <span class="highlight">nothing leaves your device.</span></p>
+    <p>The extension stores the following locally using Chrome's built-in storage API:</p>
+    <p>• Your Netquel username (for labeling exports)</p>
+    <p>• Your saved ship names and codes</p>
+    <p>• Your folder organization</p>
+    <p>• Your custom command preferences</p>
+    <p>• Your optional profile photo (stored as base64 locally)</p>
+    <p>This data <span class="highlight">never leaves your device</span>. It is never transmitted to Relied, any server, or any third party.</p>
+  </div>
+
+  <h2>2. Data We Do NOT Collect</h2>
+  <div class="card">
+    <p>🚫 We do not collect your Netquel credentials.</p>
+    <p>🚫 We do not collect your browsing history.</p>
+    <p>🚫 We do not use analytics, cookies, or tracking pixels.</p>
+    <p>🚫 We do not transmit any data to external servers.</p>
+    <p>🚫 We do not sell, rent, or share your data with anyone.</p>
+  </div>
+
+  <h2>3. Where Your Data Is Stored</h2>
+  <p>All data is stored using Chrome's <code>chrome.storage.local</code> API, exclusively on your device. Uninstalling the extension deletes this data. You can export a backup JSON at any time from the Settings panel.</p>
+
+  <h2>4. Network Access</h2>
+  <p>The extension only communicates with <span class="highlight">Netquel.com</span> — by automating chat messages on that site. No data is sent to Relied or anyone else.</p>
+
+  <h2>5. Permissions Explained</h2>
+  <div class="card">
+    <p><strong style="color:var(--accent2)">storage</strong> — Save ships and settings locally on your device.</p>
+    <p><strong style="color:var(--accent2)">activeTab</strong> — Interact with the Netquel.com tab when you press LOAD.</p>
+    <p><strong style="color:var(--accent2)">scripting</strong> — Inject the content script into Netquel.com pages.</p>
+    <p><strong style="color:var(--accent2)">tabs</strong> — Open the full-page view and legal pages.</p>
+    <p><strong style="color:var(--accent2)">host_permissions (*://*.netquel.com/*)</strong> — Extension only runs on Netquel.com. No access to any other website.</p>
+  </div>
+
+  <h2>6. Contact</h2>
+  <p>For any privacy questions:</p>
+  <p>Email: is.relied.on@gmail.com</p>
+  <p>Discord: eliedr</p>
+
+  <footer>Netquel Ship Manager · Copyright &copy; Relied · <a href="tos.html" style="color:var(--accent2);">Terms of Service</a></footer>
+</div>
+</body>
+</html>

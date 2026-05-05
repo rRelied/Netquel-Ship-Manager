@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Netquel Ship Manager</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap');
+    * { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --bg:#080d14; --surface:#0d1520; --surface2:#111d2e;
+      --border:#1a2d45; --accent:#00e5a0; --accent2:#0af;
+      --danger:#ff4d6d; --warn:#ffb347; --star:#ffd700;
+      --text:#c8dff0; --muted:#4a6a85;
+      --glow:0 0 12px rgba(0,229,160,0.35);
+      --fs:12px; --fs-sm:10px; --fs-xs:9px; --fs-lg:14px;
+    }
+    body.fs-small  { --fs:11px; --fs-sm:9px;  --fs-xs:8px;  --fs-lg:13px; }
+    body.fs-medium { --fs:12px; --fs-sm:10px; --fs-xs:9px;  --fs-lg:14px; }
+    body.fs-large  { --fs:14px; --fs-sm:12px; --fs-xs:10px; --fs-lg:16px; }
+    body.fs-xl     { --fs:16px; --fs-sm:13px; --fs-xs:11px; --fs-lg:18px; }
+
+    body { width:420px; min-height:560px; height:560px; background:var(--bg); color:var(--text);
+      font-family:'Share Tech Mono',monospace; font-size:var(--fs);
+      display:flex; flex-direction:column; overflow:hidden; }
+    body.fullpage   { width:100vw; height:100vh; min-height:100vh; }
+    body.sidebar-mode { height:100vh; min-height:100vh; }
+
+    /* ══ ONBOARDING ══ */
+    #onboarding { display:none; flex-direction:column; align-items:center; justify-content:center;
+      flex:1; padding:32px 28px; gap:18px; text-align:center; }
+    #onboarding.active { display:flex; }
+    .ob-logo { font-size:40px; }
+    .ob-title { font-family:'Orbitron',sans-serif; font-size:calc(var(--fs) + 4px); color:var(--accent);
+      letter-spacing:.1em; text-shadow:0 0 10px rgba(0,229,160,.5); }
+    .ob-sub { font-size:var(--fs-sm); color:var(--muted); line-height:1.7; }
+    .ob-input { width:100%; background:var(--surface2); border:1px solid var(--border);
+      border-radius:6px; padding:10px 14px; color:var(--text); font-family:'Share Tech Mono',monospace;
+      font-size:var(--fs); outline:none; transition:border-color .2s; text-align:center; }
+    .ob-input:focus { border-color:var(--accent); }
+    .ob-input::placeholder { color:var(--muted); }
+    .ob-btn { width:100%; padding:11px; background:var(--accent); border:none; border-radius:6px;
+      color:#000; font-family:'Share Tech Mono',monospace; font-size:var(--fs); font-weight:700;
+      cursor:pointer; letter-spacing:.06em; transition:all .15s; }
+    .ob-btn:hover { background:#00ffb3; box-shadow:var(--glow); }
+    .ob-err { font-size:var(--fs-sm); color:var(--danger); min-height:14px; }
+
+    /* ══ LAYOUT ══ */
+    #app { display:none; flex:1; flex-direction:row; overflow:hidden; }
+    #app.active { display:flex; }
+    .sidebar { width:52px; background:var(--surface); border-right:1px solid var(--border);
+      display:flex; flex-direction:column; align-items:center; padding:10px 0; gap:4px; flex-shrink:0; }
+    .sb-logo { font-size:18px; margin-bottom:8px; padding-bottom:8px;
+      border-bottom:1px solid var(--border); width:100%; text-align:center; cursor:pointer; }
+    .sb-btn { width:40px; height:40px; display:flex; flex-direction:column;
+      align-items:center; justify-content:center; border-radius:8px; cursor:pointer;
+      transition:all .15s; border:1px solid transparent; gap:2px; color:var(--muted);
+      background:transparent; font-family:'Share Tech Mono',monospace; font-size:0; }
+    .sb-btn .icon { font-size:16px; }
+    .sb-btn .label { font-size:8px; letter-spacing:.04em; }
+    .sb-btn:hover { background:rgba(0,229,160,.08); color:var(--accent); border-color:rgba(0,229,160,.2); }
+    .sb-btn.active { background:rgba(0,229,160,.12); color:var(--accent);
+      border-color:rgba(0,229,160,.3); box-shadow:var(--glow); }
+    .sb-spacer { flex:1; }
+    .sb-avatar { width:34px; height:34px; border-radius:50%; border:1.5px solid var(--border);
+      display:flex; align-items:center; justify-content:center; font-size:16px; cursor:pointer;
+      transition:all .15s; color:var(--muted); overflow:hidden; background:var(--surface2); }
+    .sb-avatar img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+    .sb-avatar:hover { border-color:var(--accent); }
+
+    .pane { display:none; flex:1; flex-direction:column; overflow:hidden; }
+    .pane.active { display:flex; }
+    .pane-header { padding:10px 12px 8px; background:var(--surface);
+      border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; flex-shrink:0; }
+    .pane-title { font-family:'Orbitron',sans-serif; font-size:var(--fs-sm); color:var(--accent);
+      letter-spacing:.08em; flex:1; }
+    .pane-badge { font-size:var(--fs-xs); color:var(--muted); }
+    .ph-btn { padding:4px 9px; background:transparent; border:1px solid var(--border);
+      border-radius:4px; color:var(--muted); font-family:'Share Tech Mono',monospace;
+      font-size:var(--fs-xs); cursor:pointer; transition:all .15s; white-space:nowrap; }
+    .ph-btn:hover { border-color:var(--accent); color:var(--accent); }
+    .ph-btn.accent { border-color:var(--accent); color:var(--accent); }
+    .ph-btn.accent:hover { background:var(--accent); color:#000; box-shadow:var(--glow); }
+
+    /* ══ PROFILE BANNER ══ */
+    .profile-banner { display:flex; align-items:center; gap:10px; padding:7px 12px;
+      background:linear-gradient(90deg,rgba(0,229,160,.07),transparent);
+      border-bottom:1px solid var(--border); flex-shrink:0; }
+    .pb-avatar { width:30px; height:30px; border-radius:50%; background:rgba(0,229,160,.15);
+      border:1.5px solid var(--accent); display:flex; align-items:center; justify-content:center;
+      font-size:14px; flex-shrink:0; overflow:hidden; cursor:pointer; }
+    .pb-avatar img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+    .pb-info { flex:1; min-width:0; }
+    .pb-name { font-family:'Orbitron',sans-serif; font-size:var(--fs-xs); color:var(--accent);
+      letter-spacing:.07em; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .pb-discord { font-size:var(--fs-xs); color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .pb-expand { padding:3px 7px; background:transparent; border:1px solid var(--border);
+      border-radius:4px; color:var(--muted); font-family:'Share Tech Mono',monospace;
+      font-size:var(--fs-xs); cursor:pointer; transition:all .15s; white-space:nowrap; flex-shrink:0; }
+    .pb-expand:hover { border-color:var(--accent2); color:var(--accent2); }
+
+    /* ══ QUICK-COPY BAR ══ */
+    .quick-copy-bar { display:flex; align-items:center; gap:6px; padding:6px 12px;
+      background:rgba(0,175,255,.05); border-bottom:1px solid var(--border); flex-shrink:0; }
+    .qc-label { font-size:var(--fs-xs); color:var(--muted); flex:1; }
+    .qc-btn { padding:4px 10px; background:transparent; border:1px solid var(--accent2);
+      border-radius:4px; color:var(--accent2); font-family:'Share Tech Mono',monospace;
+      font-size:var(--fs-xs); cursor:pointer; transition:all .15s; white-space:nowrap; }
+    .qc-btn:hover { background:var(--accent2); color:#000; }
+    .qc-copied { font-size:var(--fs-xs); color:var(--accent); opacity:0; transition:opacity .3s; }
+    .qc-copied.show { opacity:1; }
+
+    /* ══ FAVORITES ══ */
+    .fav-folder-header { display:flex; align-items:center; gap:8px; padding:7px 12px;
+      background:linear-gradient(90deg,rgba(255,215,0,.06),transparent);
+      border-bottom:1px solid rgba(255,215,0,.2); flex-shrink:0; transition:background .15s; }
+    .fav-folder-header.drag-over { background:rgba(255,215,0,.16); outline:1px dashed rgba(255,215,0,.5); }
+    .fav-folder-icon { font-size:14px; }
+    .fav-folder-label { font-family:'Orbitron',sans-serif; font-size:var(--fs-xs);
+      color:var(--star); letter-spacing:.07em; flex:1; }
+    .fav-cap { font-size:var(--fs-xs); color:var(--muted); }
+    .fav-cap.near { color:var(--warn); }
+    .fav-cap.full { color:var(--danger); }
+    .fav-hint { font-size:var(--fs-xs); color:rgba(255,215,0,.35); }
+    #pane-quick .search-bar { padding:8px 10px; border-bottom:1px solid var(--border); flex-shrink:0; }
+    #pane-quick .search-bar input { width:100%; background:var(--surface2);
+      border:1px solid var(--border); border-radius:4px; padding:6px 10px;
+      color:var(--text); font-family:'Share Tech Mono',monospace; font-size:var(--fs); outline:none; }
+    #pane-quick .search-bar input:focus { border-color:var(--accent); }
+    #pane-quick .search-bar input::placeholder { color:var(--muted); }
+    .quick-list { flex:1; overflow-y:auto; scrollbar-width:thin; scrollbar-color:var(--border) transparent; }
+    .quick-list::-webkit-scrollbar { width:3px; }
+    .quick-list::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+    .quick-item { display:flex; align-items:center; gap:8px; padding:9px 12px;
+      border-bottom:1px solid rgba(26,45,69,.4); transition:background .15s; }
+    .quick-item:hover { background:rgba(255,215,0,.03); }
+    .qi-tag { width:6px; height:26px; border-radius:3px; flex-shrink:0; }
+    .qi-unstar { font-size:var(--fs); cursor:pointer; flex-shrink:0; transition:transform .15s;
+      background:none; border:none; padding:0; line-height:1; color:var(--star); }
+    .qi-unstar:hover { transform:scale(1.2); }
+    .qi-info { flex:1; min-width:0; }
+    .qi-name { font-size:var(--fs); color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .qi-note { font-size:var(--fs-xs); color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-style:italic; }
+    .qi-folder { font-size:var(--fs-xs); color:var(--muted); }
+    .qi-load { padding:4px 10px; background:var(--accent); border:none; border-radius:4px;
+      color:#000; font-family:'Share Tech Mono',monospace; font-size:var(--fs-sm); font-weight:700;
+      cursor:pointer; transition:all .15s; flex-shrink:0; }
+    .qi-load:hover { background:#00ffb3; box-shadow:var(--glow); }
+    .fav-hotkey { font-size:var(--fs-xs); color:var(--muted); flex-shrink:0;
+      background:var(--surface2); border:1px solid var(--border); border-radius:3px;
+      padding:1px 5px; letter-spacing:.04em; }
+    .empty-state { flex:1; display:flex; flex-direction:column; align-items:center;
+      justify-content:center; color:var(--muted); gap:8px; padding:20px; text-align:center; }
+    .empty-state .eicon { font-size:28px; }
+    .empty-state .ehint { font-size:var(--fs-xs); color:#2a4a65; line-height:1.6; }
+
+    /* ══ FILE MANAGER ══ */
+    .fm-toolbar { padding:7px 10px; border-bottom:1px solid var(--border);
+      display:flex; gap:5px; flex-shrink:0; }
+    .fm-tb-btn { padding:5px 8px; background:transparent; border:1px solid var(--border);
+      border-radius:4px; color:var(--muted); font-family:'Share Tech Mono',monospace;
+      font-size:var(--fs-xs); cursor:pointer; transition:all .15s; white-space:nowrap; }
+    .fm-tb-btn:hover { border-color:var(--accent2); color:var(--accent2); }
+    .fm-search { flex:1; background:var(--surface2); border:1px solid var(--border);
+      border-radius:4px; padding:5px 8px; color:var(--text);
+      font-family:'Share Tech Mono',monospace; font-size:var(--fs-sm); outline:none; }
+    .fm-search:focus { border-color:var(--accent); }
+    .fm-search::placeholder { color:var(--muted); }
+    .fm-list { flex:1; overflow-y:auto; scrollbar-width:thin; scrollbar-color:var(--border) transparent; }
+    .fm-list::-webkit-scrollbar { width:3px; }
+    .fm-list::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+    .clipboard-bar { display:none; align-items:center; gap:6px; padding:5px 10px;
+      background:rgba(0,175,255,.08); border-bottom:1px solid rgba(0,175,255,.2);
+      font-size:var(--fs-xs); color:var(--accent2); flex-shrink:0; }
+    .clipboard-bar.show { display:flex; }
+    .cb-name { flex:1; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .cb-paste { padding:3px 8px; background:var(--accent2); border:none; border-radius:3px;
+      color:#000; font-family:'Share Tech Mono',monospace; font-size:var(--fs-xs); cursor:pointer; }
+    .cb-clear { background:transparent; border:none; color:var(--muted); cursor:pointer; font-size:var(--fs); }
+
+    /* Folder row */
+    .fm-folder { display:flex; align-items:center; gap:6px; padding:8px 10px;
+      background:var(--surface2); border-bottom:1px solid var(--border);
+      cursor:pointer; user-select:none; transition:background .15s; position:relative; }
+    .fm-folder:hover { filter:brightness(1.08); }
+    .fm-folder.drag-over { outline:1px dashed var(--accent); }
+    .ff-color-strip { width:3px; height:100%; position:absolute; left:0; top:0; border-radius:3px 0 0 3px; }
+    .ff-arrow { font-size:9px; color:var(--muted); transition:transform .2s; flex-shrink:0; display:inline-block; }
+    .fm-folder.open .ff-arrow { transform:rotate(90deg); }
+    .ff-icon { font-size:14px; flex-shrink:0; }
+    .ff-name { flex:1; font-size:var(--fs); color:var(--accent2); letter-spacing:.04em;
+      overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .ff-count { font-size:var(--fs-xs); color:var(--muted); flex-shrink:0; }
+    /* Folder color dot button */
+    .ff-color-btn { width:14px; height:14px; border-radius:50%; border:1px solid rgba(255,255,255,.2);
+      cursor:pointer; flex-shrink:0; transition:transform .15s; }
+    .ff-color-btn:hover { transform:scale(1.3); }
+    .ff-del { padding:2px 6px; background:transparent; border:1px solid rgba(255,77,109,.3);
+      border-radius:3px; color:var(--danger); font-size:var(--fs-xs); cursor:pointer;
+      transition:all .15s; flex-shrink:0; opacity:.5; }
+    .ff-del:hover { opacity:1; background:rgba(255,77,109,.1); }
+
+    /* Ship row */
+    .fm-ship { display:flex; align-items:center; gap:7px; padding:7px 10px 7px 18px;
+      border-bottom:1px solid rgba(26,45,69,.3); transition:background .15s; cursor:default;
+      position:relative; }
+    .fm-ship.ungrouped { padding-left:10px; }
+    .fm-ship:hover { background:rgba(0,229,160,.03); }
+    .fm-ship.selected { background:rgba(0,175,255,.07); }
+    .fm-ship.dragging { opacity:.35; }
+    /* Tag strip on left edge */
+    .fs-tag { width:3px; position:absolute; left:0; top:0; bottom:0; border-radius:3px 0 0 3px; }
+    .fs-info { flex:1; min-width:0; }
+    .fs-name { font-size:var(--fs); color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .fs-meta { display:flex; align-items:center; gap:6px; }
+    .fs-code { font-size:var(--fs-xs); color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; }
+    .fs-note-badge { font-size:var(--fs-xs); color:var(--accent2); flex-shrink:0; cursor:default; }
+    .fs-btns { display:flex; gap:4px; flex-shrink:0; align-items:center; }
+    .fs-btn { padding:3px 7px; border:1px solid var(--border); background:transparent;
+      border-radius:3px; color:var(--muted); font-family:'Share Tech Mono',monospace;
+      font-size:var(--fs-xs); cursor:pointer; transition:all .15s; }
+    .fs-btn.load { border-color:rgba(0,229,160,.4); color:var(--accent); }
+    .fs-btn.load:hover { background:var(--accent); color:#000; }
+    .fs-dots { width:24px; height:24px; display:flex; align-items:center; justify-content:center;
+      border-radius:4px; cursor:pointer; color:var(--muted); font-size:15px;
+      transition:all .15s; flex-shrink:0; border:1px solid transparent; }
+    .fs-dots:hover { background:rgba(0,175,255,.1); color:var(--accent2); border-color:var(--border); }
+
+    /* Note tooltip on hover */
+    .fs-note-tip { display:none; position:absolute; left:10px; bottom:calc(100% + 4px);
+      background:var(--surface); border:1px solid var(--border); border-radius:5px;
+      padding:6px 10px; font-size:var(--fs-xs); color:var(--text); max-width:240px;
+      white-space:pre-wrap; z-index:500; box-shadow:0 4px 12px rgba(0,0,0,.5); pointer-events:none; }
+    .fm-ship:hover .fs-note-tip { display:block; }
+
+    /* ══ CONTEXT MENU ══ */
+    .ctx-menu { position:fixed; background:var(--surface); border:1px solid var(--border);
+      border-radius:6px; padding:4px; z-index:99999; min-width:168px;
+      box-shadow:0 8px 24px rgba(0,0,0,.6); display:none; }
+    .ctx-menu.show { display:block; }
+    .ctx-item { padding:7px 10px; border-radius:4px; cursor:pointer; font-size:var(--fs-sm);
+      color:var(--text); display:flex; align-items:center; gap:7px; transition:background .1s; }
+    .ctx-item:hover { background:rgba(0,229,160,.08); color:var(--accent); }
+    .ctx-item.danger:hover { background:rgba(255,77,109,.08); color:var(--danger); }
+    .ctx-item.fav-item:hover { background:rgba(255,215,0,.08); color:var(--star); }
+    .ctx-sep { border:none; border-top:1px solid var(--border); margin:3px 0; }
+
+    /* ══ COLOUR PICKER POPOVER ══ */
+    .color-picker-pop { position:fixed; background:var(--surface); border:1px solid var(--border);
+      border-radius:8px; padding:10px; z-index:99999; display:none; flex-direction:column; gap:6px;
+      box-shadow:0 8px 24px rgba(0,0,0,.6); }
+    .color-picker-pop.show { display:flex; }
+    .cp-title { font-size:var(--fs-xs); color:var(--muted); letter-spacing:.06em; }
+    .cp-swatches { display:flex; flex-wrap:wrap; gap:5px; }
+    .cp-swatch { width:20px; height:20px; border-radius:50%; cursor:pointer;
+      border:2px solid transparent; transition:transform .15s,border-color .15s; }
+    .cp-swatch:hover { transform:scale(1.25); }
+    .cp-swatch.active { border-color:#fff; }
+    .cp-none { padding:3px 8px; background:transparent; border:1px solid var(--border);
+      border-radius:4px; color:var(--muted); font-family:'Share Tech Mono',monospace;
+      font-size:var(--fs-xs); cursor:pointer; width:100%; transition:all .15s; }
+    .cp-none:hover { border-color:var(--danger); color:var(--danger); }
+
+    /* ══ EXPORT MODAL ══ */
+    .export-modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.75);
+      z-index:2000; align-items:center; justify-content:center; }
+    .export-modal-overlay.show { display:flex; }
+    .export-modal { background:var(--surface); border:1px solid var(--border); border-radius:8px;
+      width:340px; max-height:480px; display:flex; flex-direction:column; overflow:hidden; }
+    .export-modal-header { padding:14px 16px 10px; border-bottom:1px solid var(--border);
+      display:flex; align-items:center; gap:8px; flex-shrink:0; }
+    .export-modal-title { font-family:'Orbitron',sans-serif; font-size:var(--fs-sm); color:var(--accent);
+      letter-spacing:.08em; flex:1; }
+    .export-modal-close { background:transparent; border:none; color:var(--muted); cursor:pointer; font-size:14px; }
+    .export-modal-close:hover { color:var(--danger); }
+    .export-actions { padding:8px 12px; border-bottom:1px solid var(--border);
+      display:flex; gap:6px; align-items:center; flex-shrink:0; }
+    .export-sel-all { padding:4px 9px; background:transparent; border:1px solid var(--border);
+      border-radius:4px; color:var(--muted); font-family:'Share Tech Mono',monospace;
+      font-size:var(--fs-xs); cursor:pointer; transition:all .15s; }
+    .export-sel-all:hover { border-color:var(--accent); color:var(--accent); }
+    .export-count { font-size:var(--fs-xs); color:var(--muted); flex:1; text-align:right; }
+    .export-tree { flex:1; overflow-y:auto; padding:6px 0;
+      scrollbar-width:thin; scrollbar-color:var(--border) transparent; }
+    .export-tree::-webkit-scrollbar { width:3px; }
+    .export-tree::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+    .exp-folder-label { display:flex; align-items:center; gap:6px; padding:6px 12px;
+      font-size:var(--fs-sm); color:var(--accent2); background:var(--surface2);
+      border-bottom:1px solid var(--border); }
+    .exp-folder-label input[type=checkbox] { accent-color:var(--accent2); flex-shrink:0; }
+    .exp-folder-label span { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .exp-ship-row { display:flex; align-items:center; gap:7px; padding:6px 12px 6px 28px;
+      border-bottom:1px solid rgba(26,45,69,.25); transition:background .1s; }
+    .exp-ship-row:hover { background:rgba(0,229,160,.03); }
+    .exp-ship-row input[type=checkbox] { accent-color:var(--accent); flex-shrink:0; }
+    .exp-ship-name { font-size:var(--fs-sm); color:var(--text); flex:1;
+      overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .exp-ship-fav { font-size:var(--fs-xs); color:var(--star); }
+    .export-footer { padding:10px 12px; border-top:1px solid var(--border);
+      display:flex; gap:8px; align-items:center; flex-shrink:0; }
+    .export-do-btn { flex:1; padding:8px; background:var(--accent); border:none; border-radius:4px;
+      color:#000; font-family:'Share Tech Mono',monospace; font-size:var(--fs); font-weight:700;
+      cursor:pointer; transition:all .15s; }
+    .export-do-btn:hover { background:#00ffb3; }
+    .export-do-btn:disabled { opacity:.4; cursor:default; }
+    .export-cancel-btn { padding:8px 14px; background:transparent; border:1px solid var(--border);
+      border-radius:4px; color:var(--muted); font-family:'Share Tech Mono',monospace;
+      font-size:var(--fs-sm); cursor:pointer; transition:all .15s; }
+    .export-cancel-btn:hover { border-color:var(--danger); color:var(--danger); }
+
+    /* ══ PROFILE ══ */
+    #pane-profile { overflow-y:auto; }
+    .profile-body { padding:16px; display:flex; flex-direction:column; gap:14px; }
+    .profile-avatar-section { display:flex; flex-direction:column; align-items:center; gap:10px; padding:12px 0; }
+    .big-avatar { width:72px; height:72px; border-radius:50%; background:rgba(0,229,160,.12);
+      border:2px solid var(--accent); display:flex; align-items:center; justify-content:center;
+      font-size:32px; overflow:hidden; cursor:pointer; transition:all .15s; }
+    .big-avatar:hover { border-color:#00ffb3; box-shadow:var(--glow); }
+    .big-avatar img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+    .avatar-hint { font-size:var(--fs-xs); color:var(--muted); }
+    .profile-uname-display { font-family:'Orbitron',sans-serif; font-size:var(--fs-lg); color:var(--accent); letter-spacing:.08em; }
+    .profile-discord-display { font-size:var(--fs-sm); color:var(--muted); }
+    #avatar-import { display:none; }
+
+    /* ══ MODALS ══ */
+    .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.7);
+      z-index:1000; align-items:center; justify-content:center; }
+    .modal-overlay.show { display:flex; }
+    .modal { background:var(--surface); border:1px solid var(--border); border-radius:8px;
+      padding:18px; width:320px; display:flex; flex-direction:column; gap:12px; }
+    .modal-title { font-family:'Orbitron',sans-serif; font-size:var(--fs); color:var(--accent); letter-spacing:.08em; }
+    .modal label { font-size:var(--fs-xs); color:var(--muted); margin-bottom:3px; display:block; }
+    .modal input, .modal select, .modal textarea {
+      width:100%; background:var(--bg); border:1px solid var(--border); border-radius:4px;
+      padding:8px 10px; color:var(--text); font-family:'Share Tech Mono',monospace; font-size:var(--fs); outline:none; }
+    .modal textarea { resize:vertical; min-height:56px; line-height:1.5; }
+    .modal input:focus, .modal select:focus, .modal textarea:focus { border-color:var(--accent); }
+    .modal select option { background:var(--bg); }
+    .modal-err { font-size:var(--fs-sm); color:var(--danger); min-height:14px; }
+    .modal-row { display:flex; gap:8px; }
+    .modal-btn { flex:1; padding:8px; border:none; border-radius:4px;
+      font-family:'Share Tech Mono',monospace; font-size:var(--fs); font-weight:700; cursor:pointer; transition:all .15s; }
+    .modal-btn.primary { background:var(--accent); color:#000; }
+    .modal-btn.primary:hover { background:#00ffb3; }
+    .modal-btn.secondary { background:transparent; border:1px solid var(--border); color:var(--muted); }
+    .modal-btn.secondary:hover { border-color:var(--danger); color:var(--danger); }
+
+    /* Tag swatches in modal */
+    .tag-swatches { display:flex; flex-wrap:wrap; gap:5px; margin-top:4px; }
+    .tag-swatch { width:22px; height:22px; border-radius:50%; cursor:pointer;
+      border:2px solid transparent; transition:transform .15s,border-color .15s; }
+    .tag-swatch:hover { transform:scale(1.2); }
+    .tag-swatch.active { border-color:#fff; }
+    .tag-none { padding:3px 8px; background:transparent; border:1px solid var(--border);
+      border-radius:4px; color:var(--muted); font-family:'Share Tech Mono',monospace;
+      font-size:var(--fs-xs); cursor:pointer; transition:all .15s; }
+    .tag-none:hover { border-color:var(--accent); color:var(--accent); }
+
+    /* History list in modal */
+    .history-list { display:flex; flex-direction:column; gap:4px; }
+    .history-item { display:flex; align-items:center; gap:6px; padding:5px 8px;
+      background:var(--bg); border:1px solid var(--border); border-radius:4px; }
+    .history-code { font-size:var(--fs-xs); color:var(--muted); flex:1;
+      overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .history-date { font-size:var(--fs-xs); color:var(--muted); flex-shrink:0; }
+    .history-restore { padding:2px 7px; background:transparent; border:1px solid var(--accent2);
+      border-radius:3px; color:var(--accent2); font-family:'Share Tech Mono',monospace;
+      font-size:var(--fs-xs); cursor:pointer; flex-shrink:0; transition:all .15s; }
+    .history-restore:hover { background:var(--accent2); color:#000; }
+
+    /* Share modal */
+    .share-url-box { background:var(--bg); border:1px solid var(--border); border-radius:4px;
+      padding:8px 10px; font-size:var(--fs-xs); color:var(--muted); word-break:break-all;
+      line-height:1.5; }
+
+    /* ══ SETTINGS ══ */
+    #pane-settings { overflow-y:auto; }
+    #pane-settings .pane-header { flex-shrink:0; }
+    .settings-body { padding:14px; display:flex; flex-direction:column; gap:14px; }
+    .setting-group { display:flex; flex-direction:column; gap:8px; }
+    .setting-label { font-size:var(--fs-xs); color:var(--muted); letter-spacing:.07em; text-transform:uppercase; }
+    .setting-input { background:var(--surface2); border:1px solid var(--border); border-radius:4px;
+      padding:8px 10px; color:var(--text); font-family:'Share Tech Mono',monospace; font-size:var(--fs);
+      outline:none; width:100%; transition:border-color .2s; }
+    .setting-input:focus { border-color:var(--accent); }
+    .setting-btn { padding:8px 14px; background:transparent; border:1px solid var(--border);
+      border-radius:4px; color:var(--muted); font-family:'Share Tech Mono',monospace;
+      font-size:var(--fs-sm); cursor:pointer; transition:all .15s; }
+    .setting-btn:hover { border-color:var(--accent); color:var(--accent); }
+    .setting-row { display:flex; gap:8px; align-items:center; }
+    .setting-divider { border:none; border-top:1px solid var(--border); margin:2px 0; }
+    #file-import { display:none; }
+    .font-size-opts { display:flex; gap:6px; }
+    .fs-opt { flex:1; padding:7px 4px; background:transparent; border:1px solid var(--border);
+      border-radius:4px; color:var(--muted); font-family:'Share Tech Mono',monospace;
+      font-size:var(--fs-xs); cursor:pointer; transition:all .15s; text-align:center; line-height:1.3; }
+    .fs-opt.active { border-color:var(--accent); color:var(--accent); background:rgba(0,229,160,.08); }
+    .fs-opt:hover:not(.active) { border-color:var(--muted); color:var(--text); }
+    .hk-opt { flex:1; padding:7px 4px; background:transparent; border:1px solid var(--border);
+      border-radius:4px; color:var(--muted); font-family:'Share Tech Mono',monospace;
+      font-size:var(--fs-xs); cursor:pointer; transition:all .15s; text-align:center; line-height:1.3; }
+    .hk-opt.active { border-color:var(--accent2); color:var(--accent2); background:rgba(0,175,255,.08); }
+    .hk-opt:hover:not(.active) { border-color:var(--muted); color:var(--text); }
+    .cmd-row { display:flex; align-items:center; gap:6px; }
+    .cmd-prefix { font-size:var(--fs); color:var(--accent2); flex-shrink:0; width:14px; }
+    .cmd-label { font-size:var(--fs-xs); color:var(--muted); flex-shrink:0; width:60px; }
+    .cmd-input { flex:1; background:var(--surface2); border:1px solid var(--border); border-radius:4px;
+      padding:5px 8px; color:var(--text); font-family:'Share Tech Mono',monospace; font-size:var(--fs-sm); outline:none; }
+    .cmd-input:focus { border-color:var(--accent); }
+    .attr-box { background:var(--surface2); border:1px solid var(--border); border-radius:6px;
+      padding:10px 12px; display:flex; flex-direction:column; gap:5px; }
+    .attr-title { font-family:'Orbitron',sans-serif; font-size:var(--fs-xs); color:var(--accent); letter-spacing:.08em; }
+    .attr-line { font-size:var(--fs-xs); color:var(--muted); line-height:1.6; }
+    .attr-link { color:var(--accent2); cursor:pointer; text-decoration:underline; }
+    .attr-link:hover { color:var(--accent); }
+
+    /* Expand bar */
+    .expand-bar { padding:5px 10px; border-top:1px solid var(--border);
+      display:flex; justify-content:space-between; align-items:center; flex-shrink:0; }
+    .expand-link { font-size:var(--fs-xs); color:var(--muted); cursor:pointer; transition:color .15s; white-space:nowrap; }
+    .expand-link:hover { color:var(--accent2); }
+
+    /* Scanlines */
+    body::after { content:''; position:fixed; inset:0;
+      background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.025) 2px,rgba(0,0,0,.025) 4px);
+      pointer-events:none; z-index:9999; }
+  </style>
+</head>
+<body>
+
+<!-- ══ ONBOARDING ══ -->
+<div id="onboarding">
+  <div class="ob-logo">🚀</div>
+  <div class="ob-title">SHIP MANAGER</div>
+  <div class="ob-sub">Welcome! Enter your Netquel username to get started.</div>
+  <input class="ob-input" id="ob-username" placeholder="Your Netquel username" autocomplete="off" spellcheck="false"/>
+  <div class="ob-err" id="ob-err"></div>
+  <button class="ob-btn" id="ob-confirm">LET'S GO →</button>
+</div>
+
+<!-- ══ MAIN APP ══ -->
+<div id="app">
+  <div class="sidebar">
+    <div class="sb-logo" id="sb-logo-btn" title="Open as full page">🚀</div>
+    <button class="sb-btn active" data-pane="pane-quick"><span class="icon">⭐</span><span class="label">FAV</span></button>
+    <button class="sb-btn" data-pane="pane-files"><span class="icon">📁</span><span class="label">FILES</span></button>
+    <div class="sb-spacer"></div>
+    <div class="sb-avatar" id="sb-avatar" title="Profile" data-pane="pane-profile">👤</div>
+    <button class="sb-btn" data-pane="pane-settings" style="margin-top:4px;"><span class="icon">⚙</span><span class="label">SET</span></button>
+  </div>
+
+  <!-- ── FAVORITES ── -->
+  <div class="pane active" id="pane-quick">
+    <div class="pane-header">
+      <div class="pane-title">FAVORITES</div>
+      <div class="pane-badge" id="ql-badge">0 / 9</div>
+    </div>
+    <div class="profile-banner">
+      <div class="pb-avatar" id="pb-avatar-q" data-pane="pane-profile">👤</div>
+      <div class="pb-info">
+        <div class="pb-name" id="pb-name-q">COMMANDER</div>
+        <div class="pb-discord" id="pb-discord-q"></div>
+      </div>
+      <button class="pb-expand" id="pb-expand-btn">⤢ Expand</button>
+    </div>
+    <!-- Quick-copy current /save code bar -->
+    <div class="quick-copy-bar">
+      <span class="qc-label">📋 Grab latest /save code</span>
+      <span class="qc-copied" id="qc-copied">✓ Copied!</span>
+      <button class="qc-btn" id="qc-btn">Copy Code</button>
+    </div>
+    <div class="fav-folder-header" id="fav-drop-zone">
+      <span class="fav-folder-icon">📂</span>
+      <span class="fav-folder-label">★ FAVORITES</span>
+      <span class="fav-cap" id="fav-cap">0/9</span>
+      <span class="fav-hint">&nbsp;← drop here</span>
+    </div>
+    <div class="search-bar">
+      <input type="text" id="ql-search" placeholder="search favorites..." autocomplete="off" spellcheck="false"/>
+    </div>
+    <div class="quick-list" id="quick-list"></div>
+  </div>
+
+  <!-- ── FILE MANAGER ── -->
+  <div class="pane" id="pane-files">
+    <div class="pane-header">
+      <div class="pane-title">FILE MANAGER</div>
+      <button class="ph-btn accent" id="fm-add-ship">+ Ship</button>
+      <button class="ph-btn" id="fm-add-folder">📁</button>
+    </div>
+    <div class="profile-banner">
+      <div class="pb-avatar" id="pb-avatar-fm" data-pane="pane-profile">👤</div>
+      <div class="pb-info">
+        <div class="pb-name" id="pb-name-fm">COMMANDER</div>
+        <div class="pb-discord" id="pb-discord-fm"></div>
+      </div>
+    </div>
+    <div class="fm-toolbar">
+      <input class="fm-search" id="fm-search" type="text" placeholder="search all ships..." autocomplete="off" spellcheck="false"/>
+      <button class="fm-tb-btn" id="fm-export">⬇ Export</button>
+      <button class="fm-tb-btn" id="fm-import-btn">⬆ Import</button>
+      <input type="file" id="file-import" accept=".json"/>
+    </div>
+    <div class="clipboard-bar" id="clipboard-bar">
+      <span>📋 Copied:</span>
+      <span class="cb-name" id="cb-name"></span>
+      <button class="cb-paste" id="cb-paste">Paste Here</button>
+      <button class="cb-clear" id="cb-clear">✕</button>
+    </div>
+    <div class="fm-list" id="fm-list"></div>
+  </div>
+
+  <!-- ── PROFILE ── -->
+  <div class="pane" id="pane-profile">
+    <div class="pane-header"><div class="pane-title">PROFILE</div></div>
+    <div class="profile-body">
+      <div class="profile-avatar-section">
+        <div class="big-avatar" id="big-avatar-btn" title="Click to set photo">👤</div>
+        <div class="avatar-hint">Click to set a profile photo (optional)</div>
+        <div class="profile-uname-display" id="profile-uname-display">COMMANDER</div>
+        <div class="profile-discord-display" id="profile-discord-display"></div>
+        <input type="file" id="avatar-import" accept="image/*"/>
+      </div>
+      <div class="setting-group">
+        <div class="setting-label">Netquel Username</div>
+        <input class="setting-input" id="prof-username" autocomplete="off" spellcheck="false" placeholder="Your Netquel username"/>
+      </div>
+      <div class="setting-group">
+        <div class="setting-label">Discord Username &nbsp;<span style="color:var(--muted);font-size:var(--fs-xs);text-transform:none;">(optional)</span></div>
+        <input class="setting-input" id="prof-discord" autocomplete="off" spellcheck="false" placeholder="e.g. eliedr"/>
+      </div>
+      <button class="setting-btn" id="prof-save" style="border-color:var(--accent);color:var(--accent);">Save Profile</button>
+      <div style="font-size:var(--fs-xs);color:var(--muted);line-height:1.7;">Discord tag is included in exports. Photo stored locally only.</div>
+    </div>
+  </div>
+
+  <!-- ── SETTINGS ── -->
+  <div class="pane" id="pane-settings">
+    <div class="pane-header"><div class="pane-title">SETTINGS</div></div>
+    <div class="settings-body">
+      <div class="setting-group">
+        <div class="setting-label">Text Size</div>
+        <div class="font-size-opts">
+          <div class="fs-opt" data-size="small" style="font-size:10px;">S<br><span style="font-size:8px;opacity:.6;">Small</span></div>
+          <div class="fs-opt active" data-size="medium" style="font-size:11px;">M<br><span style="font-size:8px;opacity:.6;">Default</span></div>
+          <div class="fs-opt" data-size="large" style="font-size:12px;">L<br><span style="font-size:8px;opacity:.6;">Large</span></div>
+          <div class="fs-opt" data-size="xl" style="font-size:13px;">XL<br><span style="font-size:8px;opacity:.6;">X-Large</span></div>
+        </div>
+      </div>
+      <hr class="setting-divider"/>
+      <div class="setting-group">
+        <div class="setting-label">Data</div>
+        <div class="setting-row">
+          <button class="setting-btn" id="set-export">⬇ Export JSON</button>
+          <button class="setting-btn" id="set-import">⬆ Import JSON</button>
+        </div>
+      </div>
+      <hr class="setting-divider"/>
+      <div class="setting-group">
+        <div class="setting-label">Edit Commands</div>
+        <div style="font-size:var(--fs-xs);color:var(--muted);margin-bottom:4px;">Prefix . is always required</div>
+        <div id="cmd-editor" style="display:flex;flex-direction:column;gap:5px;"></div>
+        <div class="setting-row" style="margin-top:4px;">
+          <button class="setting-btn" id="set-save-cmds">Save Commands</button>
+          <button class="setting-btn" id="set-reset-cmds">Reset Defaults</button>
+        </div>
+      </div>
+      <hr class="setting-divider"/>
+      <div class="setting-group">
+        <div class="setting-label">Hotkey Mode</div>
+        <div style="font-size:var(--fs-xs);color:var(--muted);margin-bottom:6px;line-height:1.6;">
+          Press a key on Netquel.com to instantly load a Favorite ship by its slot number (1–9).
+        </div>
+        <div class="font-size-opts">
+          <div class="hk-opt active" data-mode="number" style="flex:1.2;">🔢 Number Keys<br><span style="font-size:8px;opacity:.6;">1 – 9 (not in chat)</span></div>
+          <div class="hk-opt" data-mode="function" style="flex:1.2;">⌨️ Function Keys<br><span style="font-size:8px;opacity:.6;">F1 – F9 (anywhere)</span></div>
+        </div>
+        <div style="font-size:var(--fs-xs);color:var(--muted);margin-top:4px;line-height:1.6;">
+          <strong style="color:var(--accent2)">Number keys:</strong> press 1–9 when the chat box is <em>not</em> focused.<br>
+          <strong style="color:var(--accent2)">Function keys:</strong> press F1–F9 anywhere on the page.
+        </div>
+      </div>
+      <hr class="setting-divider"/>
+      <div class="setting-group">
+        <div class="setting-label">About</div>
+        <div class="attr-box">
+          <div class="attr-title">NETQUEL SHIP MANAGER</div>
+          <div class="attr-line">Designed &amp; Copyrighted by <strong style="color:var(--accent)">Relied</strong></div>
+          <div class="attr-line" style="margin-top:2px;">
+            <span class="attr-link" id="link-tos">Terms of Service</span>
+            &nbsp;·&nbsp;
+            <span class="attr-link" id="link-privacy">Privacy Policy</span>
+          </div>
+          <div class="attr-line" style="margin-top:4px;font-size:var(--fs-xs);">
+            Email: is.relied.on@gmail.com &nbsp;·&nbsp; Discord: eliedr
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- #app -->
+
+<div class="expand-bar" id="expand-bar">
+  <span class="expand-link" id="expand-page-btn">⤢ Full page</span>
+  <span class="expand-link" id="sidebar-btn">📌 Sidebar on Netquel</span>
+</div>
+
+<!-- Context menu -->
+<div class="ctx-menu" id="ctx-menu">
+  <div class="ctx-item fav-item" id="ctx-fav">⭐ Add to Favorites</div>
+  <hr class="ctx-sep"/>
+  <div class="ctx-item" id="ctx-note">📝 Edit Note &amp; Tag</div>
+  <div class="ctx-item" id="ctx-history">🕐 View History</div>
+  <div class="ctx-item" id="ctx-share">🔗 Share Link</div>
+  <hr class="ctx-sep"/>
+  <div class="ctx-item" id="ctx-rename">✏️ Rename</div>
+  <div class="ctx-item" id="ctx-change-code">🔑 Change Code</div>
+  <div class="ctx-item" id="ctx-move">📂 Move to Folder</div>
+  <hr class="ctx-sep"/>
+  <div class="ctx-item danger" id="ctx-delete">🗑️ Delete</div>
+</div>
+
+<!-- Folder colour picker popover -->
+<div class="color-picker-pop" id="color-picker-pop">
+  <div class="cp-title">FOLDER COLOR</div>
+  <div class="cp-swatches" id="cp-swatches"></div>
+  <button class="cp-none" id="cp-none">✕ Remove color</button>
+</div>
+
+<!-- Export modal -->
+<div class="export-modal-overlay" id="export-overlay">
+  <div class="export-modal">
+    <div class="export-modal-header">
+      <div class="export-modal-title">SELECT SHIPS TO EXPORT</div>
+      <button class="export-modal-close" id="export-modal-close">✕</button>
+    </div>
+    <div class="export-actions">
+      <button class="export-sel-all" id="export-sel-all">Select All</button>
+      <button class="export-sel-all" id="export-desel-all">Deselect All</button>
+      <span class="export-count" id="export-count">0 selected</span>
+    </div>
+    <div class="export-tree" id="export-tree"></div>
+    <div class="export-footer">
+      <button class="export-do-btn" id="export-do-btn" disabled>⬇ Export Selected</button>
+      <button class="export-cancel-btn" id="export-cancel-btn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Ship modal -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-title" id="modal-title">ADD SHIP</div>
+    <div id="modal-body"></div>
+    <div class="modal-err" id="modal-err"></div>
+    <div class="modal-row">
+      <button class="modal-btn primary" id="modal-confirm">SAVE</button>
+      <button class="modal-btn secondary" id="modal-cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script src="popup.js"></script>
+</body>
+</html>
