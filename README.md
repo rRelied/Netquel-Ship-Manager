@@ -1,7 +1,7 @@
 # 🚀 Netquel Ship Manager
 
-**Version 2.1**  
-*Save, organize, and instantly load your custom ships on [Netquel.com](https://netquel.com)*
+**Version 2.1 · Made by Relied**  
+Save, organize, and instantly load your custom ships on [Netquel.com](https://netquel.com).
 
 ---
 
@@ -10,16 +10,16 @@
 1. [Installation](#installation)
 2. [First-Time Setup](#first-time-setup)
 3. [The Interface](#the-interface)
-4. [Saving Ships (Chat Commands)](#saving-ships-chat-commands)
+4. [Saving Ships — Chat Commands](#saving-ships--chat-commands)
 5. [Loading Ships](#loading-ships)
 6. [Favorites](#favorites)
-7. [1–9 / F1–F9 Hotkeys](#19--f1f9-hotkeys)
+7. [Hotkeys — 1–9 or F1–F9](#hotkeys--19-or-f1f9)
 8. [File Manager](#file-manager)
 9. [Folders](#folders)
 10. [Ship Notes & Color Tags](#ship-notes--color-tags)
 11. [Ship History & Rollback](#ship-history--rollback)
 12. [Quick-Copy Code](#quick-copy-code)
-13. [Share Links](#share-links)
+13. [Chat Binds](#chat-binds)
 14. [Export & Import](#export--import)
 15. [Sidebar Mode](#sidebar-mode)
 16. [Full Page Mode](#full-page-mode)
@@ -33,9 +33,10 @@
 
 ## Installation
 
-This extension is not on the Chrome Web Store — you load it manually as an unpacked extension.
+This extension is loaded manually as an unpacked extension — it is not on the Chrome Web Store.
 
-**Step 1.** Download or clone the extension folder to your computer. It should contain these files:
+**Step 1.** Download the extension folder. It should contain:
+
 ```
 netquel-extension/
 ├── manifest.json
@@ -45,596 +46,568 @@ netquel-extension/
 ├── share.html
 ├── tos.html
 ├── privacy.html
-└── icon16.png, icon48.png, icon128.png
+├── icon16.png
+├── icon48.png
+└── icon128.png
 ```
 
-> **Note:** You need to supply your own icon images (16×16, 48×48, 128×128 pixels). Name them `icon16.png`, `icon48.png`, and `icon128.png` and place them in the folder. Any images will work — just make sure the file names match exactly.
+> You need to supply your own icon images (16×16, 48×48, and 128×128 pixels). Name them exactly `icon16.png`, `icon48.png`, and `icon128.png`. Any image works — just match the names.
 
 **Step 2.** Open Chrome and go to `chrome://extensions`
 
-**Step 3.** In the top-right corner, turn on **Developer mode**
+**Step 3.** Toggle on **Developer mode** in the top-right corner
 
 **Step 4.** Click **Load unpacked** and select the `netquel-extension` folder
 
-**Step 5.** The 🚀 rocket icon will appear in your Chrome toolbar. Pin it for easy access by clicking the puzzle piece icon in the toolbar and pinning Netquel Ship Manager.
+**Step 5.** The 🚀 icon will appear in your Chrome toolbar. Click the puzzle piece icon and pin it for easy access.
 
 ---
 
 ## First-Time Setup
 
-The first time you open the extension, you'll see a welcome screen asking for your **Netquel username**.
+The first time you open the extension, you'll be asked to enter your **Netquel username**. This is the name that gets attached to your exported ship files so friends know whose ships they're importing. It is stored only on your device and never sent anywhere.
 
-- This is the name other players will see when you export and share your ships
-- It is stored **only on your device** — it is never sent anywhere
-- It does not have to match your Netquel account username exactly, but it helps others identify whose ships they're importing
+Type your name and press **LET'S GO →** (or Enter). You're in.
 
-Type your username and click **LET'S GO →** (or press Enter). You'll be taken to the main interface.
-
-You can change your username later in the **Profile** pane (click the avatar icon in the sidebar).
+You can change your username anytime in the **Profile** pane.
 
 ---
 
 ## The Interface
 
-The extension opens as a **popup** when you click the 🚀 icon in your Chrome toolbar. The popup has a narrow left sidebar with navigation buttons, and a main content area on the right.
+The extension opens as a popup. A narrow sidebar on the left has navigation buttons; the main content area is on the right.
 
-### Sidebar Navigation Buttons
+### Sidebar Nav Buttons
 
-| Icon | Pane | What it does |
-|------|------|--------------|
-| ⭐ FAV | Favorites | Your pinned ships, quick-load access |
-| 📁 FILES | File Manager | All ships, folders, full management |
-| Avatar | Profile | Set username, Discord, profile photo |
+| Icon | Pane | Purpose |
+|------|------|---------|
+| ⭐ FAV | Favorites | Your pinned ships + quick load |
+| 📁 FILES | File Manager | All ships, full organization |
+| 💬 CHAT | Chat Binds | Key-to-message shortcuts |
+| Avatar | Profile | Username, Discord, photo |
 | ⚙ SET | Settings | Font size, commands, data, about |
 
-Click any button to switch panes. The active pane is highlighted in green.
+### Bottom Bar
 
-### Expand Bar (bottom of popup)
-
-At the very bottom of the popup you'll find two links:
-- **⤢ Full page** — opens the extension in a dedicated browser tab with more space
-- **📌 Sidebar on Netquel** — injects the extension as a sidebar panel directly on Netquel.com
+At the bottom of the popup:
+- **⤢ Full page** — opens the extension in its own browser tab
+- **📌 Sidebar on Netquel** — injects the extension as a side panel on Netquel.com
 
 ---
 
-## Saving Ships (Chat Commands)
+## Saving Ships — Chat Commands
 
-The extension works by typing special **dot commands** directly into the Netquel chat box. Commands start with a `.` (period).
+Commands are typed directly into the Netquel chat box and start with a `.` (period).
 
-### Tip: Press `.` anywhere to focus chat
-If your cursor isn't in the chat box, just press the `.` key on your keyboard anywhere on the Netquel page and the chat input will automatically focus and the dot will be typed for you. Then type the rest of your command.
+### Tip — Press `.` to instantly focus chat
+
+If your cursor isn't in the chat box, press `.` anywhere on the page. The chat input will focus automatically and the dot will already be typed.
 
 ---
 
 ### `.name <ShipName>` — Save a ship
 
-**How to use:**
-1. In Netquel, type `/save` in chat and press Enter. The server will reply with a long save code starting with `netquel...`
-2. Once the save code appears in chat, type `.name MyShipName` in the chat box and press Enter
-3. The extension reads the most recent save code from the chat and saves it under that name
+1. In Netquel chat, type `/save` and press Enter
+2. Wait for the server to reply with a save code (starts with `netquel...`)
+3. Type `.name MyShip` and press Enter
+
+The extension reads the most recent save code from chat and stores it under that name.
 
 **Example:**
 ```
 /save
-[Server replies with: netquel0j~AxB3...]
+[Server: netquel0j~AxB3zQ...]
 .name BigFighter
+→ Saved "BigFighter"
 ```
-Result: A ship called "BigFighter" is saved with that code.
 
-**Updating a ship:**  
-If you type `.name BigFighter` again after saving a new version, it **updates** the existing ship. The old code is automatically saved to the ship's history (up to 3 versions).
+If a ship with that name already exists, it gets **updated** and the old code is pushed to its version history automatically.
 
 ---
 
 ### `.load <ShipName>` — Load a ship
 
-Typing `.load BigFighter` will automatically send `/load [the saved code]` to Netquel chat, loading your ship immediately.
-
 ```
 .load BigFighter
 ```
 
-**Loading another user's imported ship:**  
-If you've imported ships from someone else, they get placed in a folder called `[Username]'s Ships`. To load one:
+Automatically sends `/load [code]` to chat. Your ship loads immediately.
+
+**Loading an imported ship from another player:**
 ```
 .load PlayerName ShipName
 ```
+This looks up the ship inside the `[PlayerName]'s Ships` folder.
 
 ---
 
-### `.list` — List all saved ships
+### `.list` — List all ships
 
-Displays a toast notification listing all your saved ship names.
-
-```
-.list
-```
+Shows a toast with all your saved ship names.
 
 ---
 
 ### `.delete <ShipName>` — Delete a ship
 
-Permanently removes a ship from your collection.
-
 ```
 .delete BigFighter
 ```
 
----
-
-### `.help` — Show command reference
-
-Displays a quick reminder of all available commands.
-
-```
-.help
-```
+Permanently removes the ship.
 
 ---
 
-### Custom Command Names
+### `.help` — Quick command reference
 
-You can rename any command (e.g. change `.name` to `.n`) in **Settings → Edit Commands**. See the [Customizing Commands](#customizing-commands) section for details.
+Shows a reminder of all commands in a toast.
+
+---
+
+### Custom command names
+
+You can rename any command in **Settings → Edit Commands**. See [Customizing Commands](#customizing-commands).
 
 ---
 
 ## Loading Ships
 
-There are three ways to load a ship:
+Three ways to load any ship:
 
-**1. Chat command** — Type `.load ShipName` in Netquel chat (described above)
+**1. Chat command** — `.load ShipName` in Netquel chat
 
-**2. LOAD button in the popup** — Open the extension, find your ship in Favorites or File Manager, and click the green **LOAD** button next to it. The extension will send the load command to Netquel automatically and close the popup.
+**2. LOAD button** — Open the extension, find the ship in Favorites or File Manager, click **LOAD**. The popup closes automatically and the ship loads.
 
-**3. 1–9 / F1–F9 hotkeys** — Press 1 through 9 (or F1–F9) on your keyboard while on Netquel.com to instantly load your 1st through 9th Favorite ship without opening the extension at all. See [1–9 / F1–F9 Hotkeys](#19--f1f9-hotkeys).
+**3. Hotkeys** — Press a number key or function key while on Netquel.com to load a Favorited ship instantly. See [Hotkeys](#hotkeys--19-or-f1f9).
 
-> **Important:** For the LOAD button to work, you must be on Netquel.com in the current browser tab. If you're on a different page, you'll see an alert asking you to go to Netquel first.
+> The LOAD button requires you to be on Netquel.com in the active tab.
 
 ---
 
 ## Favorites
 
-The **Favorites** pane (⭐) is your quick-access panel for up to **9 ships** you use most often.
+The **Favorites** pane (⭐) holds up to **9** of your most-used ships for instant access.
 
-### Adding to Favorites
+### Adding a ship to Favorites
 
-There are two ways to add a ship to Favorites:
-
-**Method 1 — Drag and drop:** In the File Manager, drag any ship row up to the **★ FAVORITES FOLDER** header bar at the top of the Favorites pane. When the header glows gold, release to drop.
-
-**Method 2 — Three-dot menu:** In the File Manager, click the **⋯** button on any ship row. Select **⭐ Add to Favorites** from the dropdown menu.
+- **Drag and drop** — In File Manager, drag a ship row up to the **★ FAVORITES** header and drop it when it glows gold
+- **Three-dot menu** — Click ⋯ on any ship → **⭐ Add to Favorites**
 
 ### Removing from Favorites
 
-In the Favorites pane, click the ⭐ star button to the left of any ship's name to remove it from Favorites. It stays in your File Manager — it's just unpinned.
+Click the ⭐ star button to the left of any ship in the Favorites pane. The ship stays in your File Manager — it's just unpinned.
 
-### Favorites Cap
+### The cap
 
-You can have a maximum of **9 ships** in Favorites. The counter in the top-right of the pane header shows how many slots are used (e.g. `3 / 7`). It turns **orange** at 8/9 and **red** when full. If you try to add a 10th ship, you'll get an alert.
+Maximum 9 ships. The counter top-right shows usage (e.g. `4 / 9`). It turns orange at 8/9 and red when full.
 
-### Searching Favorites
+### Hotkey labels
 
-Use the search bar below the Favorites folder header to filter your favorited ships by name.
+Each ship in Favorites shows a small badge (`1`, `2`, `3` etc. or `F1`, `F2`, `F3` depending on your hotkey mode). This tells you which key will load it instantly.
 
-### Hotkey Labels
+### Searching
 
-Each ship in the Favorites pane shows a small label like `1`, `2`, `F1`, `F2`, etc. (depending on your hotkey mode setting) — this tells you which key will load that ship instantly. The order is top-to-bottom: your 1st favorite is slot 1, 2nd is slot 2, and so on.
+The search bar below the Favorites header filters your starred ships by name.
+
+### Quick-copy current save code
+
+A bar at the top of the Favorites pane lets you grab the most recent `/save` code from Netquel chat and copy it straight to your clipboard — no naming required. Click **Copy Code** and it's done.
 
 ---
 
-## 1–9 / F1–F9 Hotkeys
+## Hotkeys — 1–9 or F1–F9
 
-While you're on Netquel.com, you can press a key to instantly load any of your 9 Favorite ships — **no popup needed**. There are two modes; you choose which one you prefer in Settings.
+Press a single key to instantly load a Favorited ship while on Netquel.com — no popup needed.
 
 ### Number Key Mode (default)
-Press **1 through 9** on your keyboard to load the ship in that Favorites slot.
 
-- **1** loads your 1st Favorite
-- **2** loads your 2nd Favorite
-- ... and so on up to **9**
+Press **1 through 9** to load the ship in that Favorites slot.
 
-**Important:** Number key mode only fires when the **chat box is not focused**. If you're typing in chat, pressing 1–9 types normally as expected. Click somewhere outside the chat input first, then press the key.
+- Only fires when the **chat box is not focused**
+- If you're typing in chat, number keys type normally — no interference
+- Click anywhere outside the chat box first, then press your key
 
 ### Function Key Mode
-Press **F1 through F9** on your keyboard to load the ship in that slot.
 
-- **F1** loads your 1st Favorite
-- **F2** loads your 2nd Favorite
-- ... and so on up to **F9**
+Press **F1 through F9** to load the corresponding Favorites slot.
 
-Function keys fire **anywhere on the page** — whether the chat box is focused or not.
+- Fires **anywhere** on the page, whether chat is focused or not
 
-### Switching Modes
-Go to **⚙ Settings → Hotkey Mode** and click either **🔢 Number Keys** or **⌨️ Function Keys**. The setting takes effect immediately and is remembered between sessions.
+### Switching modes
 
-### How Both Modes Work
-- A toast notification confirms which ship is being loaded
-- If a Favorites slot is empty (e.g. you only have 5 favorites and press 7), nothing happens
-- The Favorites pane shows the hotkey label next to each ship (e.g. `1`, `2`, `3` or `F1`, `F2`, `F3`) so you always know the mapping
+**Settings → Hotkey Mode** — click **🔢 Number Keys** or **⌨️ Function Keys**.
 
-> **Tip:** Arrange your Favorites carefully — put your most-used ship at slot 1, second most-used at slot 2, etc. You can have up to **9** favorites.
+### Notes
+
+- If a slot is empty, pressing that key does nothing
+- A toast confirms which ship is loading
+- Slot order matches top-to-bottom in the Favorites list
+
+> **Tip:** Put your most-loaded ship at slot 1, second most-used at slot 2, and so on.
 
 ---
 
 ## File Manager
 
-The **File Manager** (📁) is where all your ships live. Every saved ship appears here, whether or not it's in Favorites.
+The **File Manager** (📁) shows every saved ship.
 
-### Ship Rows
+### Ship rows
 
-Each ship row shows:
+Each row shows:
 - The ship **name**
-- A shortened **save code** preview
-- A 📝 badge if the ship has a note (hover the row to see the note)
-- A 🕐 badge if the ship has version history saved
-- A colored strip on the left edge if a color tag is set
+- A shortened **code preview**
+- A 📝 badge if a note exists (hover the row to read the full note)
+- A 🕐 badge if version history is saved
+- A colored left-edge strip if a color tag is set
 - A **LOAD** button
-- A **⋯** three-dot button for more options
+- A **⋯** three-dot menu button
 
-### Three-Dot Menu (⋯)
-
-Clicking ⋯ on any ship opens a dropdown with:
+### Three-dot menu (⋯)
 
 | Option | What it does |
 |--------|-------------|
-| ⭐ Add to Favorites / ☆ Remove | Toggle whether this ship is in Favorites |
-| 📝 Edit Note & Tag | Add a text note and color label to the ship |
-| 🕐 View History | See and restore previous saved versions of this ship |
-| 🔗 Share Link | Generate a shareable URL for this ship |
+| ⭐ Add to Favorites / ☆ Remove | Toggle Favorites |
+| 📝 Edit Note & Tag | Write a note and pick a color label |
+| 🕐 View History | See and restore previous code versions |
+| 📋 Copy Code | Copies the ship's full save code to clipboard |
 | ✏️ Rename | Change the ship's name |
-| 🔑 Change Code | Replace the ship's saved code with a new one |
-| 📂 Move to Folder | Move the ship into a folder |
+| 🔑 Change Code | Replace the ship's saved code |
+| 📂 Move to Folder | Move the ship to a different folder |
 | 🗑️ Delete | Permanently remove the ship |
 
 ### Searching
 
-The search bar at the top of the File Manager filters ships by name in real time across all folders and ungrouped ships.
+The search bar filters by ship name across all folders in real time.
 
-### Selecting Ships (Clipboard)
+### Selecting ships (clipboard move)
 
-Click on a ship row (not on a button) to **select** it (highlighted in blue). Then:
-- Press **Ctrl+C** to "copy" it to the clipboard bar
-- Press **Ctrl+V** (or click "Paste Here" in the clipboard bar) to open a Move dialog and place the ship in a folder
+Click a ship row (not on a button) to select it (highlighted blue). Then:
+- **Ctrl+C** — "copies" it to the clipboard bar at the top
+- **Ctrl+V** or **"Paste Here"** — opens a Move dialog to place it in a folder
 
-This is an alternative to drag-and-drop for moving ships.
+### Adding ships manually
 
-### Adding Ships Manually
-
-Click **+ Ship** in the File Manager header to manually add a ship by typing its name, paste in a save code, and optionally assign a folder. This is useful if you have a code from somewhere else (e.g. imported from a friend's chat message).
+Click **+ Ship** in the header. Enter a name, paste a code, optionally pick a folder.
 
 ---
 
 ## Folders
 
-Folders help you organize ships into categories (e.g. "Fighters", "Mining", "PvP Builds").
+Organize ships into named categories.
 
-### Creating a Folder
+### Creating a folder
 
-Click the **📁** button in the File Manager header and enter a folder name.
+Click **📁** in the File Manager header and enter a name.
 
-### Folder Color Labels
+### Folder colors
 
-Each folder can have a color assigned to it for quick visual scanning. Click the small **colored circle** on the right side of any folder row to open a color picker. Choose from 12 colors. The folder's background and left edge strip will tint to that color. Click **✕ Remove color** to clear it.
+Click the small **colored circle** on the right side of any folder row to pick a color from 12 options. The folder background and left strip tint to that color. Click **✕ Remove color** to clear it.
 
-### Opening and Closing Folders
+### Collapsing / expanding
 
-Click anywhere on a folder row (except the buttons) to **collapse** or **expand** it. A collapsed folder shows 📁 and an expanded one shows 📂. The arrow on the left rotates when open.
+Click anywhere on the folder row (not on a button) to toggle open/closed. The arrow rotates and the icon switches between 📁 and 📂.
 
-### Moving Ships into Folders
+### Moving ships into folders
 
-**Drag and drop:** Grab a ship row and drag it onto a folder header. When the folder highlights with a green outline, release to drop. The ship moves to that folder.
+- **Drag and drop** — grab a ship row and drop it onto a folder header
+- **Three-dot menu** → **📂 Move to Folder**
+- **Drop on empty space** below all folders to move a ship to Ungrouped
 
-**Three-dot menu:** Click ⋯ on a ship → **📂 Move to Folder** → select the destination.
+### Deleting folders
 
-**Move to Ungrouped:** Drag a ship and drop it on the empty area below all folders to remove it from any folder.
-
-### Deleting Folders
-
-Click the **✕** button on the right side of a folder row. You'll be asked to confirm. The folder is removed, but all ships inside it become **Ungrouped** — they are not deleted.
-
-### Ungrouped Ships
-
-Ships that don't belong to any folder appear at the bottom of the File Manager under a gray "Ungrouped" label (only shown when you have at least one folder).
+Click **✕** on the folder row and confirm. Ships inside become Ungrouped — none are deleted.
 
 ---
 
 ## Ship Notes & Color Tags
 
-You can attach a personal note and a color tag to any ship.
+Attach personal notes and a color label to any ship.
 
-### Adding a Note
+### Adding a note or tag
 
-1. Click ⋯ on a ship → **📝 Edit Note & Tag**
-2. Type your note in the text area (e.g. "Best PvP build, upgrade shields first")
-3. Pick a color swatch for the tag (or leave it with no tag)
-4. Click **SAVE**
+Click ⋯ → **📝 Edit Note & Tag**
 
-### Viewing Notes
+- Type a note in the text area (e.g. "PvP build, upgrade shields first")
+- Click a color swatch to set a tag, or click **✕ No tag** to clear it
+- Click **SAVE**
 
-- **Hover** over a ship row in the File Manager — the note appears as a tooltip above the row
-- A 📝 badge appears on the ship row whenever a note exists
-- In the **Favorites** pane, the note shows as an italic subtitle under the ship name
+### Where notes appear
 
-### Color Tags
+- **Hover** over a ship row in File Manager — a tooltip shows the full note
+- A 📝 badge on the row indicates a note exists
+- In Favorites, the note shows as an italic subtitle under the ship name
 
-Tags are purely visual. A colored strip appears on the left edge of the ship row. Use them however you like — for example:
-- 🔴 Red = PvP / combat builds
-- 🟡 Yellow = WIP / experimental
-- 🟢 Green = Main / reliable
+### Color tags
 
-Tags are independent of folder colors.
+A 3px colored strip on the left edge of the row. Purely visual — use however you like. Tags are independent of folder colors.
 
 ---
 
 ## Ship History & Rollback
 
-Every time you **overwrite** a ship (by running `.name` again on an existing ship, or using "Change Code" in the menu), the old code is automatically saved to that ship's history. Up to **3 previous versions** are kept per ship.
+Every time you overwrite a ship (via `.name` in chat or **Change Code** in the menu), the old code is saved automatically. Up to **3 previous versions** are kept per ship.
 
-### Viewing History
+### Viewing history
 
-1. Click ⋯ on any ship → **🕐 View History**
-2. A modal shows up to 3 previous versions with the date and time each was saved
+Click ⋯ → **🕐 View History** — shows each snapshot with its timestamp.
 
-### Restoring a Previous Version
+### Restoring a version
 
-In the History modal, click **Restore** next to any snapshot. This will:
-- Move the **current** code into history (so you don't lose it)
-- Set the **snapshot** as the active code
+Click **Restore** next to any snapshot. You'll be asked to confirm. The current code moves into history and the snapshot becomes active.
 
-You'll be asked to confirm before anything changes.
-
-A 🕐 badge appears on ship rows that have history saved.
+A 🕐 badge on the ship row means history exists.
 
 ---
 
 ## Quick-Copy Code
 
-At the top of the **Favorites** pane, there's a **"📋 Grab latest /save code"** bar.
+In the **Favorites pane**, there's a **"📋 Grab latest /save code"** bar.
 
-**How to use:**
-1. In Netquel, type `/save` and let the server respond with your save code
-2. Open the extension (without navigating away from Netquel)
-3. In the Favorites pane, click **Copy Code**
-4. The most recent save code from the chat is copied to your clipboard
+1. Type `/save` in Netquel and wait for the server reply
+2. Open the extension (stay on Netquel.com)
+3. Click **Copy Code**
 
-This is useful when you want to quickly grab a code to paste somewhere (Discord, a note, etc.) without going through the full `.name` flow.
-
-A green "✓ Copied!" flash confirms the copy succeeded. If no save code is found in the current chat, you'll get an alert.
+The most recent save code from chat is copied to your clipboard instantly. A "✓ Copied!" flash confirms it. Useful for sharing codes without going through the full `.name` flow.
 
 ---
 
-## Share Links
+## Chat Binds
 
-You can generate a shareable link for any ship that anyone can open — even without the extension installed.
+The **Chat Binds** pane (💬) lets you assign any key to a chat message. Press that key while on Netquel.com and the message is instantly typed and sent — no typing required.
 
-### Generating a Share Link
+### Example uses
 
-1. Click ⋯ on any ship → **🔗 Share Link**
-2. A modal shows the generated URL
-3. Click **📋 Copy Link** to copy it to your clipboard
-4. Paste the link in Discord, a chat, or anywhere else
+| Key | Message |
+|-----|---------|
+| `q` | "Guys I'm getting chased, help!" |
+| `e` | "GG everyone, good game!" |
+| `r` | "Meet at the asteroid field!" |
+| `F4` | "Dropping loot at spawn now" |
 
-### What the Recipient Sees
+### Creating a bind
 
-When someone opens the link, they see a styled page showing:
-- The ship name
-- The full save code
-- A **📋 Copy Code to Clipboard** button
-- A link to open Netquel.com
+1. Go to the **💬 CHAT** pane
+2. Click **+ Add Bind**
+3. Enter a **key** — any single character (`a`, `b`, `1`) or a special key name (`F2`, `Space`, `Enter`)
+4. Enter the **message text** to send
+5. Click **ADD BIND**
 
-They can copy the code and use `/load [code]` in Netquel chat to load the ship. They **don't** need the extension installed to use the link.
+### Rules
+
+- Keys are case-insensitive (`A` and `a` are the same key)
+- Each key can only be used once — duplicate keys are rejected
+- You can use special key names like `Space`, `Enter`, `F1` through `F9`
+
+### Editing or deleting a bind
+
+- Click ✏️ on any bind row to edit the key or text
+- Click 🗑️ to delete the bind
+
+### How firing works
+
+While on Netquel.com, press a bound key **when the chat box is not focused**. The extension types the message into chat and presses Enter automatically. If you're already typing in chat, bound keys are ignored so normal typing is never interrupted.
+
+> **Note:** Chat binds and Favorite hotkeys (1–9 or F1–F9) are completely separate systems. A key used as a chat bind and the same key used as a hotkey will both fire — so avoid assigning the same key to both.
 
 ---
 
 ## Export & Import
 
-### Exporting Ships
+### Exporting
 
 Click **⬇ Export** in the File Manager toolbar (or **⬇ Export JSON** in Settings).
 
-A selection dialog opens showing all your ships organized by folder with checkboxes:
-- **Check/uncheck individual ships** to include or exclude them
-- **Check/uncheck a folder header** to toggle all ships in that folder at once
+A selection dialog opens with your ships organized by folder:
+- Check/uncheck individual ships
+- Check/uncheck a folder header to toggle all ships inside it
 - **Select All** / **Deselect All** buttons at the top
-- The counter shows how many ships are selected
 
-Once you've selected what you want, click **⬇ Export Selected**. A `.json` file will download to your computer. The file includes your username and Discord tag (if set) so recipients know who made the ships.
+Click **⬇ Export Selected** to download a `.json` file. Your username and Discord tag (if set) are included so importers know who made the ships.
 
-### Importing Ships
+### Importing
 
-Click **⬆ Import** in the File Manager toolbar (or **⬆ Import JSON** in Settings). Select a `.json` file previously exported from Netquel Ship Manager.
+Click **⬆ Import** and select a `.json` file from Netquel Ship Manager.
 
-**What happens during import:**
+What happens:
 - Ships are added to your collection
-- If an imported ship's **folder** already exists in your collection, the ship is placed into that existing folder (no duplicate folders are created)
-- If a ship has the **same name** as one you already have, it's automatically renamed: `MyShip (1)`, `MyShip (2)`, etc.
-- All imported ships start with Favorites turned off — you can manually star them afterward
-- An alert tells you how many were added and how many were renamed due to conflicts
+- If an imported ship's folder **already exists** in your collection, the ship goes into that existing folder (no duplicate folders)
+- **Duplicate names** get auto-renamed: `MyShip (1)`, `MyShip (2)`, etc.
+- All imported ships start unstarred — add them to Favorites manually if needed
+- An alert confirms how many were added and how many were renamed
 
 ---
 
 ## Sidebar Mode
 
-Sidebar mode lets you keep the extension open on the side of the Netquel game page while you play, without it covering the game.
+Keep the extension open alongside the game while you play.
 
-### Opening the Sidebar
+### Opening the sidebar
 
-1. Navigate to [Netquel.com](https://netquel.com)
+1. Go to Netquel.com
 2. Open the extension popup
-3. Click **📌 Sidebar on Netquel** at the bottom of the popup
+3. Click **📌 Sidebar on Netquel** at the bottom
 
-The extension will appear as a **420px panel on the right side** of your screen. The Netquel page shifts left so nothing is covered.
+The extension appears as a 420px panel on the right side. The Netquel page shifts left so nothing is hidden.
 
-### Closing the Sidebar
+### Closing the sidebar
 
-Click the **✕ Close panel** button that appears above the sidebar in the top-right area of the screen. Clicking it again will close the sidebar.
+Click **✕ Close panel** above the sidebar.
 
-> **Note:** The sidebar opens as an iframe of the extension popup. The LOAD button in the sidebar will still send the load command to the Netquel tab correctly.
+> The LOAD button still works from the sidebar — it sends the load command to the Netquel page.
 
 ---
 
 ## Full Page Mode
 
-Full page mode opens the extension in its own browser tab, giving you more screen space to work with — useful for organizing a large collection.
+Opens the extension in a full browser tab for more space.
 
-### Opening Full Page Mode
+### Opening
 
-- Click the **🚀** logo at the top of the sidebar navigation (in the popup)
+- Click the **🚀** logo at the top of the sidebar nav
 - Click **⤢ Full page** at the bottom of the popup
-- Click **⤢ Expand** in the profile banner at the top of any pane
+- Click **⤢ Expand** in any profile banner
 
-### Loading Ships from Full Page Mode
+### Loading ships from full page mode
 
-Because full page mode is in a separate tab, the LOAD button works differently. When you click LOAD:
-- If Netquel.com is open in another tab, the ship will be loaded there
-- If Netquel.com is not open, you'll get a message asking you to go there first
+The LOAD button will send the load command to your Netquel.com tab if one is open. If Netquel isn't open, you'll be prompted to go there first.
 
 ---
 
 ## Profile
 
-The Profile pane lets you set personal information that appears throughout the extension.
+### Opening
 
-### Opening Profile
+Click the **avatar circle** at the bottom of the sidebar nav, or click the avatar in any profile banner at the top of the Favorites or File Manager panes.
 
-Click the **avatar circle** at the bottom of the sidebar navigation, or click the small avatar in the profile banner at the top of any pane.
+### Username
 
-### Setting Your Username
+Shown in the profile banner and included in JSON exports. Required — cannot be empty.
 
-Your username appears in the profile banner at the top of the Favorites and File Manager panes. It's also embedded in JSON exports so people who import your ships know who made them.
+### Discord username (optional)
 
-### Setting Your Discord Username (Optional)
+Your Discord tag (e.g. `eliedr`) is included in exports so people importing your ships can reach you. Completely optional.
 
-Adding your Discord tag (e.g. `eliedr`) lets people who import your ships know how to reach you. It appears in the profile banner and in exported JSON files. It is completely optional.
+### Profile photo (optional)
 
-### Setting a Profile Photo (Optional)
+Click the large avatar circle to upload an image. It's cropped to a circle and shown throughout the UI. Stored locally only — never uploaded anywhere.
 
-Click the large avatar circle in the Profile pane to upload an image from your computer. It will be cropped to a circle and appear in the sidebar nav and profile banners. The photo is stored locally on your device only — it is never uploaded anywhere.
+### Saving
 
-### Saving Your Profile
-
-After making changes, click **Save Profile**. The button briefly shows "Saved!" to confirm.
+Click **Save Profile**. The button briefly says "Saved!" to confirm.
 
 ---
 
 ## Settings
 
-Open Settings by clicking **⚙ SET** at the bottom of the sidebar.
+Open Settings via **⚙ SET** in the sidebar.
+
+### Default Page
+
+Pick which pane opens when you click the extension icon:
+- ⭐ **Favorites** (default)
+- 📁 **Files**
+- 💬 **Chat**
 
 ### Text Size
 
-Choose from four sizes:
-- **S (Small)** — 11px base font, compact layout
-- **M (Default)** — 12px base font, standard layout  
-- **L (Large)** — 14px base font, easier to read
-- **XL (X-Large)** — 16px base font, maximum readability
+| Size | Base font |
+|------|-----------|
+| S — Small | 11px |
+| M — Default | 12px |
+| L — Large | 14px |
+| XL — X-Large | 16px |
 
-The entire UI scales when you change this — text, buttons, labels, everything. Your choice is saved automatically and remembered next time you open the extension.
+The entire UI scales — every label, button, and header. Saved automatically.
 
 ### Data
 
-- **⬇ Export JSON** — Opens the export selection dialog (same as in File Manager)
-- **⬆ Import JSON** — Opens a file picker to import a JSON file (same as in File Manager)
+- **⬇ Export JSON** — Opens the export selection dialog
+- **⬆ Import JSON** — Opens a file picker to import
+
+### Hotkey Mode
+
+- **🔢 Number Keys (1–9)** — Fires when chat is not focused
+- **⌨️ Function Keys (F1–F9)** — Fires anywhere on the page
 
 ### Edit Commands
 
-See the [Customizing Commands](#customizing-commands) section below.
-
-### 1–9 / F1–F9 Hotkeys (informational)
-
-A brief reminder that hotkeys are active on Netquel.com. No settings to change here — hotkeys are always on.
+Rename any chat command. See [Customizing Commands](#customizing-commands).
 
 ### About
 
-Shows the attribution, version info, and links to the Terms of Service and Privacy Policy pages.
+Attribution, version, and links to Terms of Service and Privacy Policy.
 
 ---
 
 ## Customizing Commands
 
-All chat commands can be renamed in **Settings → Edit Commands**. This lets you use shorter or different words if you prefer.
+**Settings → Edit Commands** — change any command to a word you prefer.
 
-### How to Change a Command
+### How
 
-1. Go to **⚙ Settings** → find the **Edit Commands** section
-2. Each command has an input field showing its current name (e.g. `name`)
-3. Change any field to your preferred word (e.g. change `name` to `n`)
-4. Click **Save Commands**
+1. In the **Edit Commands** section, change any field
+2. Click **Save Commands**
 
 **Rules:**
-- The `.` prefix is always required and cannot be removed — you're only setting the word that comes after it
-- Command names must be unique — you can't have two commands with the same word
-- Names cannot be empty or contain spaces
-- Maximum 20 characters per command
+- The `.` prefix is always required — you're only setting the word after it
+- All command names must be unique
+- No spaces or empty values
+- Max 20 characters
 
-**Example:** If you change `name` to `n`, you would use `.n MyShip` instead of `.name MyShip`.
+**Defaults:**
 
-### Resetting to Defaults
-
-Click **Reset Defaults** to restore all commands to their original names:
-
-| Default Command | What it does |
-|-----------------|-------------|
-| `.name <ShipName>` | Save/update a ship with the latest /save code |
-| `.load <ShipName>` | Load a ship into Netquel |
-| `.list` | List all saved ship names |
+| Command | Action |
+|---------|--------|
+| `.name <ShipName>` | Save or update a ship |
+| `.load <ShipName>` | Load a ship |
+| `.list` | List all saved ships |
 | `.delete <ShipName>` | Delete a ship |
 | `.help` | Show command reference |
+
+Click **Reset Defaults** to restore all of the above.
 
 ---
 
 ## Legal & Privacy
 
-### Privacy
-
-The extension **does not collect any data**. Everything is stored locally using Chrome's built-in storage API on your device only. Nothing is ever sent to any server.
+**This extension collects no data.** Everything is stored locally on your device using Chrome's built-in storage API. Nothing is ever sent to any server.
 
 What is stored locally:
-- Your ship names and save codes
-- Your folder structure and colors
-- Your username and Discord tag (if set)
-- Your profile photo (if uploaded)
-- Your command preferences and font size
+- Ship names, codes, notes, tags, and version history
+- Folder structure and colors
+- Chat binds
+- Your username, Discord tag, and profile photo
+- Your command customizations, font size, and hotkey preference
 
-When you uninstall the extension, all of this data is deleted.
+Uninstalling the extension deletes all of it.
 
-For full details, click **Privacy Policy** in Settings.
+**Open source.** You may copy, modify, and redistribute freely. If you distribute it, you must credit **Relied** as the original author and include the contact info: `is.relied.on@gmail.com` / Discord: `eliedr`.
 
-### Open Source & Credit
-
-This extension is open source. You may copy, modify, and redistribute it freely. If you do, you must:
-- Give credit to **Relied** as the original author
-- Include the contact info: `is.relied.on@gmail.com` or Discord: `eliedr`
-
-For full terms, click **Terms of Service** in Settings.
+Full details: **Settings → Terms of Service** and **Settings → Privacy Policy**.
 
 ---
 
 ## Troubleshooting
 
 **"No save code found!" when using `.name`**  
-Make sure you've typed `/save` in Netquel chat and the server has responded with a save code *in the current chat session*. The extension scans the visible chat for the most recent code. If the page was refreshed or the code scrolled out of view, type `/save` again.
-
-**".name works but the ship doesn't show in the popup**  
-Try closing and reopening the popup. The ship list refreshes when the popup opens. If it still doesn't appear, check the File Manager — ships saved via chat commands are placed in Ungrouped.
+Type `/save` in Netquel chat and wait for the server to respond. The extension looks for the most recent code in the visible chat. If none is found, type `/save` again.
 
 **LOAD button says "Open Netquel.com first!"**  
-The extension sends the load command to your active browser tab. You need to be on `netquel.com` in the same tab you're using the popup from. Switch to your Netquel tab and try again, or use the sidebar mode to keep the extension open alongside the game.
+You need to be on Netquel.com in the active tab. Switch to that tab and try again, or use Sidebar Mode to keep the extension open alongside the game.
 
 **Number keys or F-keys do nothing**  
-Make sure you're on `netquel.com`. Hotkeys only work on Netquel pages. If using **number key mode**, make sure the chat box is not focused — click somewhere else on the page first, then press the key. If using **function key mode**, press F1–F9 from anywhere. Also check that you have at least one ship in Favorites — if the slot is empty, the key does nothing.
+Make sure you're on Netquel.com. If using number key mode, click somewhere outside the chat box first — number keys won't fire while chat is focused. If using function key mode, press F1–F9 from anywhere. Also check that the target Favorites slot actually has a ship.
+
+**Chat bind key does nothing**  
+Make sure you're on Netquel.com and the chat input is **not** focused. Chat binds fire only when no text input is active. Also verify the bind is saved by checking the 💬 Chat Binds pane.
 
 **The sidebar doesn't open**  
-The sidebar requires the content script to be running on the page. If you just installed the extension or navigated to Netquel.com right before trying, try refreshing the Netquel page first, then open the popup and click Sidebar.
+Refresh the Netquel.com page and try again. The content script needs to be running on the page before the sidebar can be injected.
 
-**Export downloads an empty or broken file**  
-Make sure you have at least one ship selected (checked) in the export dialog before clicking Export Selected. The "0 selected" counter in the dialog will show if nothing is checked.
-
-**Importing a file says "Invalid JSON"**  
-Only `.json` files exported from Netquel Ship Manager can be imported. Do not try to import a manually edited file unless you are sure the JSON is valid.
+**Importing says "Invalid JSON"**  
+Only `.json` files exported from Netquel Ship Manager can be imported. Do not import manually edited files unless you're sure the JSON is valid.
 
 **Commands aren't working after customizing them**  
-After saving custom commands in Settings, the new commands take effect immediately for new input. If you're on Netquel.com, the page's content script is updated automatically. If it's still not working, try refreshing the Netquel page.
+After saving in Settings, the new commands apply immediately. If on Netquel.com, the page's content script is updated automatically. If it still doesn't work, refresh the Netquel page.
 
 ---
 
