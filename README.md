@@ -380,8 +380,8 @@ The **Chat Binds** pane (💬) lets you assign any key to a chat message. Press 
 |-----|---------|
 | `q` | "Guys I'm getting chased, help!" |
 | `e` | "GG everyone, good game!" |
-| `r` | "Meet at the asteroid field!" |
-| `F4` | "Dropping loot at spawn now" |
+| `r` | "Thx @SlashStr1ker" |
+| `F4` | "Truce?" |
 
 ### Creating a bind
 
